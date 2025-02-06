@@ -29,6 +29,10 @@ variable "shares" {
       read   = optional(string)
       update = optional(string)
     }))
+    directories = optional(list(object({
+      name     = string
+      metadata = optional(map(string))
+    })), [])
   }))
   default     = {}
   description = <<-EOT
@@ -54,6 +58,11 @@ variable "shares" {
  - `delete` - (Defaults to 30 minutes) Used when deleting the Storage Share.
  - `read` - (Defaults to 5 minutes) Used when retrieving the Storage Share.
  - `update` - (Defaults to 30 minutes) Used when updating the Storage Share.
+
+ ---
+ `directories` block supports the following:
+ - `name` - The name (or path) of the Directory that should be created within this File Share. Changing this forces a new resource to be created.
+ - `metadata` - A mapping of metadata to assign to this Directory.
 
 Supply role assignments in the same way as for `var.role_assignments`.
 

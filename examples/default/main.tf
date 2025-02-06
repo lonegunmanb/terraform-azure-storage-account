@@ -243,6 +243,12 @@ module "this" {
         key1 = "value1"
         key2 = "value2"
       }
+      directories = [
+        {
+          name     = "exampleShare"
+          metadata = { key1 = "value1" }
+        },
+      ]
     }
   }
 }

@@ -29,6 +29,31 @@ resource "azapi_resource" "share" {
   }
 }
 
+resource "azurerm_storage_share_directory" "directories" {
+  for_each = {
+    for k, v in flatten([
+      for share_name, share in var.shares :
+      [
+        for dir in share.directories != null ? share.directories : [] :
+        {
+          key = "${share_name}-${dir.name}"
+          value = {
+            name             = dir.name
+            metadata         = dir.metadata
+            storage_share_id = "${azurerm_storage_account.this.primary_file_endpoint}${azapi_resource.share[share_name].name}"
+          }
+        }
+      ]
+    ]) : v.key => v.value
+  }
+
+  name             = each.value.name
+  storage_share_id = each.value.storage_share_id
+  metadata         = each.value.metadata
+
+  depends_on = [azurerm_role_assignment.shares]
+}
+
 # Enable role assignments for shares
 resource "azurerm_role_assignment" "shares" {
   for_each = local.shares_role_assignments

@@ -63,6 +63,7 @@ The following resources are used by this module:
 - [azurerm_storage_account_local_user.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account_local_user) (resource)
 - [azurerm_storage_data_lake_gen2_filesystem.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_data_lake_gen2_filesystem) (resource)
 - [azurerm_storage_management_policy.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) (resource)
+- [azurerm_storage_share_directory.directories](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_share_directory) (resource)
 - [modtm_telemetry.telemetry](https://registry.terraform.io/providers/Azure/modtm/latest/docs/resources/telemetry) (resource)
 - [random_uuid.telemetry](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) (resource)
 - [azurerm_client_config.telemetry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
@@ -1174,6 +1175,11 @@ Description:  - `access_tier` - (Optional) The access tier of the File Share. Po
  - `read` - (Defaults to 5 minutes) Used when retrieving the Storage Share.
  - `update` - (Defaults to 30 minutes) Used when updating the Storage Share.
 
+ ---
+ `directories` block supports the following:
+ - `name` - The name (or path) of the Directory that should be created within this File Share. Changing this forces a new resource to be created.
+ - `metadata` - A mapping of metadata to assign to this Directory.
+
 Supply role assignments in the same way as for `var.role_assignments`.
 
 Type:
@@ -1209,6 +1215,10 @@ map(object({
       read   = optional(string)
       update = optional(string)
     }))
+    directories = optional(list(object({
+      name     = string
+      metadata = optional(map(string))
+    })), [])
   }))
 ```
 
