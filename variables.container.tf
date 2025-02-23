@@ -5,6 +5,7 @@ variable "containers" {
     name                           = string
     default_encryption_scope       = optional(string)
     deny_encryption_scope_override = optional(bool)
+    schema_validation_enabled      = optional(bool)
     enable_nfs_v3_all_squash       = optional(bool)
     enable_nfs_v3_root_squash      = optional(bool)
     immutable_storage_with_versioning = optional(object({
